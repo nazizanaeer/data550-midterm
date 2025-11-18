@@ -54,7 +54,39 @@ At enrollment, a total of 485 children were included in the analysis, with 245 r
 
 ## 3. Regression Analysis
 
-### 3.1 [insert regression type]
+### 3.1 Logistic regression for in-hospital mortality before stabilization
 
-#### Table 2:
+We fit a multivariable **logistic regression** model to evaluate whether receiving Modified F75 (intervention) versus Standard F75 was associated with the odds of in-hospital death before stabilization. The binary outcome was death prior to stabilization (1 = died, 0 = survived). The primary exposure was treatment arm (Modified vs Standard F75). The model was adjusted for weight group (≤ median vs > median), diarrhoea, oedema score, age in months, sex, HIV status, MUAC, and presence of kwashiorkor.
+
+#### Table 2: Multivariable logistic regression of death before stabilization
+
+```{r regression-table}
+tableregression <- readRDS(
+  file = here::here("output", "regression_analysis.rds")
+)
+
+tableregression
+```
+
+Table 2 presents adjusted odds ratios (ORs) for death before stabilization from the multivariable logistic regression model. The primary coefficient of interest is the treatment arm indicator comparing Modified F75 to Standard F75. An OR below 1 for Modified F75 would suggest a reduction in the odds of in-hospital death prior to stabilization relative to Standard F75, after controlling for baseline clinical severity and demographic covariates. Covariates such as lower MUAC, presence of oedema, diarrhoea, HIV infection, and kwashiorkor are expected to be associated with higher odds of death, reflecting greater underlying illness severity and malnutrition. The regression framework therefore allows us to estimate the independent association between treatment formulation and mortality while accounting for these potential confounders.
+
+#### Figure 1: Predicted probability of death by treatment arm
+
+```{r fig-prob-by-arm, fig.cap="Figure 1. Predicted probability of death before stabilization by treatment arm from the multivariable logistic regression model."}
+knitr::include_graphics(
+  here::here("output", "logistic_regression_plot.png")
+)
+```
+
+For each arm, the mean predicted probability of death (with corresponding uncertainty) is shown, summarizing the combined effects of treatment and covariates in the fitted logistic regression model. A visibly lower predicted probability of death in the Modified F75 arm compared with the Standard F75 arm would support the hypothesis that the modified formulation reduces early in-hospital mortality. Conversely, overlapping or similar predicted probabilities across arms would suggest little or no mortality benefit of the modified formulation under the covariate structure observed in this study.
+
+#### Figure 2: Logistic curve of death versus MUAC by treatment arm
+
+```{r fig-logistic-muac, fig.cap="Figure 2. Logistic regression curves showing the relationship between MUAC and probability of death before stabilization, stratified by treatment arm."}
+knitr::include_graphics(
+  here::here("output", "logistic_regression_smooth_curve.png")
+)
+```
+
+Individual children are plotted at the top (death) or bottom (survival) of the graph, with slight vertical jitter to reduce overplotting, while the overlaid curves represent the estimated probability of death as a smooth function of MUAC for each arm. As MUAC increases, the predicted probability of death generally declines, reflecting improved nutritional status and lower clinical risk. Differences between the curves for Standard and Modified F75 indicate whether the effect of MUAC on mortality risk differs by treatment formulation—such as a consistently lower predicted mortality for Modified F75 across the MUAC range, or a more pronounced benefit among children with the lowest MUAC measurements.
 
