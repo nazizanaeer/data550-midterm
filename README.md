@@ -7,7 +7,7 @@
   - all outputs derived from the code will be stored in the folder `output/`
   - `Makefile` contains rules for building the final report
     - use command `make midterm_report.html` to build final report
-  - `renv` package used to add a lock file (`renv.lock`) and folder `renv/` to capture information on packages
+  - (not yet) `renv` package used to add a lock file (`renv.lock`) and folder `renv/` to capture information on packages
   - use make rule `install` to restore package library 
   
 ## Code Description
@@ -25,6 +25,11 @@
   - saves summary table as `output/table1.rds`
 
 `code/02_regression_analysis.R`
+  - reads cleaned dataset from folder `output/`
+  - runs logistic regression to assess effect of modified f75 on the likelihood of death
+  - generates formatted regression table displaying odds ratios (OR), 95% confidence intervals, and p-values
+  - creates plots (elaborate later)
+  - saves table as `output/regression_analysis.rds`
 
 `code/03_render_report.R`
   - renders final project report `midterm_report.Rmd` into `.html` file
