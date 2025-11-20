@@ -1,6 +1,19 @@
 
-midterm_report.html: code/03_render_report.R midterm_report.Rmd output/table1.rds
+midterm_report.html: code/03_render_report.R midterm_report.Rmd output/table1.rds regression_analysis
 	Rscript code/03_render_report.R
+
+output/logistic_regression_plot.png: code/02_regression_analysis.R output/f75_clean.rds
+	Rscript code/02_regression_analysis.R
+
+output/logistic_regression_smooth_curve.png: code/02_regression_analysis.R output/f75_clean.rds
+	Rscript code/02_regression_analysis.R
+
+output/regression_analysis.rds: code/02_regression_analysis.R output/f75_clean.rds
+	Rscript code/02_regression_analysis.R
+
+.PHONY: regression_analysis
+regression_analysis: output/logistic_regression_plot.png output/logistic_regression_smooth_curve.png \
+   output/regression_analysis.rds
 
 output/table1.rds: code/01_table_one.R output/f75_clean.rds
 	Rscript code/01_table_one.R
