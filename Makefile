@@ -20,6 +20,11 @@ output/table1.rds: code/01_table_one.R output/f75_clean.rds
 
 output/f75_clean.rds: code/00_clean_data.R f75_dataset/f75_interim.csv
 	Rscript code/00_clean_data.R
+#Make Install Rule
+.PHONY: install
+
+install:
+	Rscript -e "renv::restore()"
 	
 .PHONY: clean
 clean:
