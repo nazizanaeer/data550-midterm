@@ -40,5 +40,5 @@
   - Synchronize your package repository (This runs: `renv::restore()`)
   - Clone the repository
   - Install all required R packages with: `make install` in `Git bash`
-  -If you add or update packages, run: `renv::snapshot()`
+  - If you add or update packages, run: `renv::snapshot()`
   
