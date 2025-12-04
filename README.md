@@ -9,7 +9,7 @@
     - we have allowed for customization by sex
       - for building the report with regression for males, set WHICH_CONFIG=male in the terminal
       - for building the report with regression for females, set WHICH_CONFIG=female
-      - for building the report with regression for both, set WHICH_CONFIG=all
+      - for building the report with regression for both, you can just make as the defult is both
     - use command `make` to build final report
   - `renv` package used to add a lock file (`renv.lock`) and folder `renv/` to capture information on packages
   - use make rule `install` to restore package library 
@@ -41,8 +41,13 @@
   - saves rendered report as `midterm_report_cutpoint_$(WHICH_CONFIG).html` in project directory
   
 `Makefile`
-  - Synchronize your package repository (This runs: `renv::restore()`)
-  - Clone the repository
-  - Install all required R packages with: `make install` in `Git bash`
-  - If you add or update packages, run: `renv::snapshot()`
+This project uses a Makefile to manage the workflow. The main steps are:
+
+  - Synchronize the R package library (runs `renv::restore()`).
+  - Clone the repository.
+  - Install all required R packages using: `make install` (run in Git Bash).
+  - If you add or update packages, run `renv::snapshot()` to update the lockfile.
+  - Generate all files (e.g., xx.rds) needed for the midterm report.
+  - Customize the regression analysis by sex using the `WHICH_CONFIG` setting (`default`, `male`, or `female`).
+  - Generate the final midterm report based on the regression configuration you choose.
   

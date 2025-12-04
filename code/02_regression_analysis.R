@@ -24,7 +24,7 @@ data <- data %>%
     hiv_new = factor(hiv_new, labels = c("Negative", "Positive"))
   )
 
-WHICH_CONFIG <- Sys.getenv("WHICH_CONFIG")
+WHICH_CONFIG <- Sys.getenv("WHICH_CONFIG", unset = "default")
 config_list <- config::get(
   config = WHICH_CONFIG
 )

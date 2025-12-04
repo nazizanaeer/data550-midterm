@@ -1,5 +1,11 @@
+WHICH_CONFIG ?= default
+export WHICH_CONFIG
 
-midterm_report_config_${WHICH_CONFIG}.html: code/03_render_report.R midterm_report.Rmd output/table1.rds regression_analysis
+midterm_report_config_${WHICH_CONFIG}.html: \
+    code/03_render_report.R \
+    midterm_report.Rmd \
+    output/table1.rds \
+    regression_analysis
 	Rscript code/03_render_report.R
 
 output/logistic_regression_plot.png: code/02_regression_analysis.R output/f75_clean.rds
@@ -20,7 +26,7 @@ output/f75_clean.rds: code/00_clean_data.R f75_dataset/f75_interim.csv
 #Make Install Rule
 .PHONY: install
 install:
-	Rscript -e "renv::restore(prompt = FALSE)"
+	Rscript -e "renv::restore"
 	
 .PHONY: clean
 clean:
