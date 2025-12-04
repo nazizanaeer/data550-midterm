@@ -24,59 +24,41 @@ data <- data %>%
     hiv_new = factor(hiv_new, labels = c("Negative", "Positive"))
   )
 
-data <- data %>%
-  mutate(
-    death = case_when(
-      final_status == 0 ~ 1,
-      final_status == 1 ~ 0,
-      TRUE ~ NA_real_
-    )
-  )
-
-analysis_data <- data %>%
-  filter(!is.na(death)) %>%
-  filter(
-    !is.na(arm_new),
-    !is.na(weight_group),
-    !is.na(diarrhoea_new),
-    !is.na(oedema_new),
-    !is.na(agemons),
-    !is.na(sex_group),
-    !is.na(hiv_new),
-    !is.na(muac),
-    !is.na(kwas_new)
-  )
-
-logit_model <- glm(
-  death ~ arm_new + weight_group +
-    diarrhoea_new + oedema_new +
-    agemons + sex_group +
-    hiv_new + muac +
-    kwas_new,
-  data   = analysis_data,
-  family = binomial(link = "logit")
+WHICH_CONFIG <- Sys.getenv("WHICH_CONFIG")
+config_list <- config::get(
+  config = WHICH_CONFIG
 )
 
-summary(logit_model)
+## logistic regression
+
+if (config_list$sex != "all") {
+  # filter by Male or Female
+  data <- data %>% filter(sex_group == config_list$sex)
+}
+
+logit_model <- glm(
+  final_status ~ arm_new + weight_group +
+    diarrhoea_new + oedema_new +
+    agemons + hiv_new + 
+    muac + kwas_new,
+  data   = data,
+  family = binomial(link = "logit")
+)
 
 tableregression <- tbl_regression(
   logit_model,
   exponentiate = TRUE
 ) %>% bold_labels()
 
-tableregression
+model_filename <- paste0("logit_model_config_", WHICH_CONFIG, ".rds")
+regression_table_filename <- paste0("regression_table_config_", WHICH_CONFIG, ".rds")
 
-gtsave(
-  as_gt(tableregression),
-  filename = here::here("output", "regression_analysis.png")
-)
+saveRDS(logit_model, here("output", model_filename))
+saveRDS(tableregression, here("output", regression_table_filename))
 
-saveRDS(
-  tableregression,
-  file = here::here("output", "regression_analysis.rds")
-)
+## graph
 
-plot_data <- analysis_data %>%
+plot_data <- data %>%
   mutate(pred = predict(logit_model, type = "response"))
 
 logit_plot <- ggplot(plot_data, aes(x = arm_new, y = pred, fill = arm_new)) +
@@ -98,31 +80,3 @@ ggsave(
   width = 6, height = 4
 )
 
-logit_smooth_plot <- ggplot(
-  analysis_data,
-  aes(x = muac, y = death, colour = arm_new)
-) +
-  geom_jitter(height = 0.05, width = 0, alpha = 0.4) +
-  geom_smooth(
-    method = "glm",
-    method.args = list(family = "binomial"),
-    se = TRUE
-  ) +
-  scale_y_continuous(
-    name = "Predicted Probability of Death",
-    limits = c(0, 1)
-  ) +
-  labs(
-    title = "Logistic Curve of Death vs MUAC by Treatment Arm",
-    x = "MUAC (cm)",
-    colour = "Treatment Arm"
-  ) +
-  theme_minimal()
-
-logit_smooth_plot
-
-ggsave(
-  filename = here::here("output", "logistic_regression_smooth_curve.png"),
-  plot = logit_smooth_plot,
-  width = 6, height = 4
-)

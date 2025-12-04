@@ -1,0 +1,8 @@
+default:
+  sex: "all"
+
+male:
+  sex: "Male"
+
+female:
+  sex: "Female"
