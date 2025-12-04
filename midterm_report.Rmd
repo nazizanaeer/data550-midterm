@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r, read-cofig, include=FALSE}
-WHICH_CONFIG <- Sys.getenv("WHICH_CONFIG")
+WHICH_CONFIG <- Sys.getenv("WHICH_CONFIG", unset = "default")
 config_list <- config::get(
     config = WHICH_CONFIG
 )
