@@ -10,8 +10,7 @@ library(here)
 
 report_filename <- paste0(
   "midterm_report_config_",
-  WHICH_CONFIG,
-  "html"
+  WHICH_CONFIG
 )
 rmarkdown::render(
   input       = here::here("midterm_report.Rmd"),

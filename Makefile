@@ -26,7 +26,7 @@ output/f75_clean.rds: code/00_clean_data.R f75_dataset/f75_interim.csv
 #Make Install Rule
 .PHONY: install
 install:
-	Rscript -e "renv::restore"
+	Rscript -e "renv::restore()"
 	
 .PHONY: clean
 clean:
